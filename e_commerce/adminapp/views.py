@@ -108,19 +108,12 @@ def editproduct(request, pid):
     images = ProductImage.objects.filter(product=product)
     if request.method == "POST":
         name = request.POST['name']
-        price = request.POST['price']
+
         cat = request.POST['category']
         desc = request.POST['desc']
         catobj = Category.objects.get(id=cat)
-        
-        if int(price) < 0:
-            messages.warning(request,"Enter a valid quantity")
-            return redirect(editproduct,pid)
-        else:
-
         # Update product attributes
-            Product.objects.filter(id=pid).update(name=name, price=price, category=catobj, description=desc)
-
+        Product.objects.filter(id=pid).update(name=name, category=catobj, description=desc)
         # Get the new images uploaded during editing
         new_images = request.FILES.getlist('images')
 
