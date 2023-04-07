@@ -72,7 +72,7 @@ $(document).ready(function () {
 
                     console.log(response, amountToBePaid);
                     var options = {
-                        // key: "rzp_test_P2idDWJHzXlYX7",
+                       
                            key: e_commerce.settings.API_KEY,
                         
                         // Enter the Key ID generated from the Dashboard

@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-@2%y#k9)72_l-^+7fh2=79!0#c5&+42+@3yhnzd71q-nbh9bw1'
+
 
 SECRET_KEY = env("SECRET_KEY")
 
@@ -87,16 +87,7 @@ WSGI_APPLICATION = 'e_commerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'e_commerce',
-#         'USER': 'postgres',
-#         'PASSWORD': '3568',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+
 
 DATABASES = {
 
@@ -162,10 +153,7 @@ MEDIA_ROOT = BASE_DIR /'uploads'
 MEDIA_URL = '/media/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'abdulmusawirkp2@gmail.com'
-# EMAIL_HOST_PASSWORD = 'dkirokiulagmnfnc'
+
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = 587
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')

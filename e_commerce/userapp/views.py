@@ -272,26 +272,7 @@ def edit_address(request, address_id):
 
     return render(request, 'user/edit_address.html',context)
 
-# def userproduct(request, id):
-#     if id == 0:
-#         product = Product.objects.all()
-        
-#     else:
-#         category = Category.objects.get(id=id)
-#         product = Product.objects.filter(category=category)
-        
-#     paginator = Paginator(product, 6)
-#     page_numebr = request.GET.get('page')
-#     page_obj = paginator.get_page(page_numebr)
-#     varient=ProductVarient.objects.all()
-#     allcategory = Category.objects.all() 
-#     context = {
-#         'product':product,
-#         'allcategory':allcategory,
-#         'page_obj':page_obj,
-#         'varient':varient
-#     }       
-#     return render(request, 'user/userproduct.html', context)
+
 
 
 def userproduct(request, id):
@@ -313,19 +294,7 @@ def userproduct(request, id):
     }
     return render(request, 'user/userproduct.html', context)
 
-# def review(request):
-#     prod = Product.objects.get(id=id)
 
-#     if request.method == 'POST':
-#         if 'username' in request.session:
-#             feedback = request.POST.get('message')
-#             user=request.user
-#             reviews= Review(user=user,feedback=feedback)
-#             reviews.save()
-#             reviews.product.set([prod])
-#             messages.info(request,'thank you for your valuable feedback ')  # Use set() to add the product to the relationship
-#             return redirect('usersingleproduct',id=id)
-#         messages.info(request,"please login and your review") 
 
 def usersingleproduct(request, id):
     
@@ -398,7 +367,7 @@ def myorders(request):
 
 def cancelOrder(request,id):
 
-#    client = razorpay.Client(auth=("rzp_test_P2idDWJHzXlYX7", "4RlxwFkFp4gvf8sMSzhOfxlt"))
+
 
    client = razorpay.Client(auth=(e_commerce.settings.API_KEY, e_commerce.settings.RAZORPAY_SECRET_KEY))
    order = Order.objects.get(id=id,user=request.user)
