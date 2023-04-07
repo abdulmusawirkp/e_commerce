@@ -1,0 +1,189 @@
+
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block banner %}{% endblock %}
+{% block bodies %}
+  <!--================Single Product Area =================-->
+  <form action="{% url 'addtocart' product_id=prod.id %}" method="POST">
+    {% csrf_token %}
+  <div class="product_image_area section_padding ">
+    <div class="container">
+      <div class="row s_product_inner justify-content-between">
+        <div class="col-lg-7 col-xl-7">
+          <div class="product_slider_img">
+            <div id="vertical">
+              {% for i in images %}
+              <div data-thumb="{{i.images.url}}" style="max-width: 100%; max-height: 100%;">
+                <img class="big_img" src="{{i.images.url}}" style="max-width: 100%; max-height: 100%;" />
+              </div>
+              {% endfor %}
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-xl-4">
+          <div class="s_product_text">
+            <h3>{{prod.name}}</h3>
+            <div id="pricediv">
+              {% if variant_price %}
+                <p  class="pt-1" style="    font-size: 24px;font-weight: bold;color: #ff3368; "> ${{ variant_price.varprice }}</p>
+              {% else %}
+                <p>No price available</p>
+              {% endif %}
+            </div>
+            <ul class="list">
+              <li>
+                <a class="active">
+                  <span>Category</span> : {{prod.category}}</a>
+              </li>
+              {% if prod.stock == 0 %}
+              <a class="text-danger"> <span>Availibility</span> : Out of Stock</a>
+            </li>
+            {% else %}
+              <li>
+                <a> <span>Availibility</span> : In Stock</a>
+              </li>
+              <br>
+             
+              {% endif %}
+              <li><select class="form-select col-6" id="selection" aria-label="Default select example" name="varient_id">
+                
+                
+                <option selected>Choose</option>
+                {% for v in  variant %}
+                <option value="{{v.varientname}}">{{v.varientname}}</option>
+                
+                {% endfor %}
+              </select></li>
+              <br>
+              <br>
+          
+            </ul>
+            <p>{{prod.description}} </p>
+            
+            <div class="card_area d-flex justify-content-betwee align-items-center">
+               {% comment %} <div class="product_count">
+                <span class="inumber-decrement"> <i class="ti-minus"></i></span>
+                <input class="input-number" type="text" value="1" min="1" max="10" name="quantity">
+                <span class="number-increment"> <i class="ti-plus"></i></span>
+              </div> {% endcomment %}
+              &nbsp &nbsp &nbsp &nbsp
+                <button class="btn btn-primary  " type="submit">Add to Cart</button>
+            
+              {% comment %} <a href="{% url 'add_to_wishlist' product_id=prod.id %}" class="like_us"> <i class="ti-heart"></i> </a> {% endcomment %}
+            </div>
+         
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+  <!--================End Single Product Area =================-->
+
+  {% comment %} <div class="container-fluid">
+    <div class="col-lg-12">
+      <div class="review_box text-center">
+        <h4 style="color: #ff3368; font-weight: bold">Add a Review Here</h4>
+  
+  
+    
+  
+        <form class="row contact_form" action="" method="post" >
+          {% csrf_token %}
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="text" class="form-control" name="name" placeholder="Your Full name" / Required>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <input type="email" class="form-control" name="email" placeholder="Email Address" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <textarea class="form-control" name="message" rows="1" placeholder="Review"></textarea>
+            </div>
+          </div>
+          <div class="col-md-12 text-right">
+            <button type="submit" value="submit" class="btn_3">
+              Submit Now
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+  
+    <section>
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-xl-8 text-center">
+          <h3 class="mb-4">Testimonials</h3>
+          <p class="mb-4 pb-2 mb-md-5 pb-md-0">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit, error amet
+            numquam iure provident voluptate esse quasi, veritatis totam voluptas nostrum
+            quisquam eum porro a pariatur veniam.
+          </p>
+        </div>
+      </div>
+      <div class="row text-center d-flex align-items-stretch ">
+        {% for i in reviews %}
+        <div class="col-md-4 mb-5 mb-md-0 d-flex align-items-stretch my-5">
+      
+  
+          <div class="card testimonial-card">
+            <div class="card-up" style="background-color: #9d789b;"></div>
+            <div class="avatar mx-auto bg-white">
+              {% if i.user.profile.image %}
+              <img src="{{i.user.profile.image.url}}"
+                class="rounded img-fluid mt-3" style="width: 100px;"  />
+                {% else %}
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp"class="rounded-circle img-fluid" />
+                {% endif %}
+                
+            </div>
+    
+  
+            <div class="card-body" style="min-width:350px; max-width:350px" >
+              <h4 class="mb-4">{{i.user.first_name}}</h4>
+              <hr />
+              <p class="dark-grey-text mt-4">
+                <i class="fas fa-quote-left pe-2"></i>  {{i.feedback}}
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+  
+        
+    </section>
+  </div> {% endcomment %}
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  $(document).ready(function() {
+      $('#selection').change(function() {  // detect change in dropdown value
+          var selectedvalue = $(this).val();
+          
+      var productid = {{prod.id}};   // get selected  value
+          $.ajax({
+              type: "POST",                  // use POST method to send data
+              url: "/usersingleproduct/"+ productid + "/",    // replace with your Django view URL
+              data: {'selected_value': selectedvalue,'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()},  // send selected RAM value as data
+              success: function(response) {
+                  console.log(response.data)
+          $("#pricediv").html(response.data)
+                      // handle server response
+              // handle server response
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText);  // handle errors
+              }
+          });
+      });
+  });
+  </script>
+
+{% endblock %}

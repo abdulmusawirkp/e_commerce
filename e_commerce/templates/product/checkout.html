@@ -1,0 +1,298 @@
+{% extends 'user/base.html' %}
+{% block banner %}
+{% endblock banner %}
+
+{% load static %}
+
+{% block bodies %}
+
+<div class="container-fluid">
+
+<section class="checkout_area padding_top">
+{% comment %}     
+    <form action="{% url 'checkout' %}" id="coupon-form" method="POST" required>
+      {%csrf_token%}
+      <div class="cupon_area">
+        <div class="check_title">
+          <h2> Have a coupon </h2>
+        </div>
+
+        <input type="hidden" class="form-control"value="{{grand_total}}" name="grand_total" required/>
+        <input type="text" name="couponCode" placeholder="Enter coupon code"  style="margin-left:0px;"/>
+        <button class="tp_btn" {% if discount %}disabled{% endif %}>Apply Coupon</button>
+      </div>
+    
+      </form>
+      <h4>Coupons available</h4>
+  <ul>
+    {% for coupon in couponcodes %}
+      <li>&nbsp CODE:&nbsp &nbsp{{ coupon.code }} &nbsp &nbsp {{coupon.discount}}% discount</li>
+    {% empty %}
+      <li>No coupons available</li>
+    {% endfor %}
+  </ul> {% endcomment %}
+  <form action="{% url 'checkout' %}" id="coupon-form" method="POST" required>
+    {% csrf_token %}
+    <div class="cupon_area row">
+      <div class="check_title col-md-6 ">
+        <h2>Have a coupon</h2>
+        <input type="hidden" class="form-control" value="{{grand_total}}" name="grand_total" required/>
+        <input type="text" name="couponCode" placeholder="Enter coupon code" style="margin-left:0px;" />
+        <button class="tp_btn" {% if discount %}disabled{% endif %}  style="">Apply Coupon</button>
+      </div>
+  
+      <div class="col-md-6 coupon-input text-center pt-4" style="background-color:#ecfdff">
+        
+        <h4>Coupons available</h4>
+      {% if couponcodes %}
+        <div class="coupon-list">
+          {% for coupon in couponcodes %}
+            <div class="coupon-item">
+              <span class="code"> Apply coupon<b> {{ coupon.code }}</b></span>
+              <span class="discount">for <b>{{ coupon.discount }}</b>% discount</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>No coupons available</p>
+      {% endif %}
+      </div>
+    </div>
+  </form>
+  
+  
+  
+
+  <br>
+      <div class="billing_details justify-content-center">
+        <div class="row ">
+          <div class="col-lg-4 ">
+            <h3>Billing Details</h3>
+            <h4 class="font-weight-bold mt-0 mb-4 ">Select your Delivery Address</h4>
+
+    <!-- Default unchecked -->
+
+    <form action="{% url 'place_order'%}" method="POST"> 
+      {% csrf_token %}
+                        
+                          {% for address in AllAddress %}
+                          <div class="container">
+                              <div class="card shadow my-2 col-12 d-flex">
+                                  <div class="card-body"> 
+                                      <input type="radio" name="selected_addresses" value="{{ address.id }}" checked>
+                                      <div class="container">
+                                          <p>{{ address.firstname}}</p>
+                                          <p>{{ address.address_line_1 }}</p>
+                                          <p>{{ address.address_line_2 }}</p>
+                                          <p>{{ address.city }} , {{ address.state }}</p>  
+                                          <p>{{ address.phone }}</p>
+                                          <p>{{ address.pincode }}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          {% endfor %}           
+                      
+             
+          </div>
+          <div class="col-lg-8 mt-5 pt-5">
+            <div class="order_box">
+              <h2>Your Order</h2>
+              <ul class="list">
+                <li>
+                  <a href="#">Product
+                    <span>Total</span>
+                  </a>
+                </li>
+                {% for item in cart_items %}
+                <li>
+                  <a href=""> {{item.provar.varientname}},{{item.product.name}}
+                    <span class="middle">X {{item.quantity}}</span>
+                    <span class="last">{{item.provar.varprice}}</span>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              <ul class="list list_2">
+                <li>
+                  <a href="#">Subtotal
+                    <span>{{subtotal}}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">Shipping
+                    <span>Rs. 70.00</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">Total
+                    <span>{{grandtotal}}</span>
+                  </a>
+                </li>
+                {% if discount %}
+                <li>
+                  <span>
+                    Coupon Applied.
+                  </span>
+                </li>
+                <li>
+                  <a href="#"
+                    >Coupon Code : {{coupon.code}}
+                  </a>
+                </li>
+                <li>
+                  <a href="#"
+                    >Coupon Discount({{coupon.discount}}%)
+                    <span> -₹ {{coupon_discount}}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#"
+                    >Payable Amount
+                    <span>₹ {{amountToBePaid}}</span>
+                  </a>
+                </li>
+        
+                {%endif%}
+              </ul>
+                
+              <!-- Address Related Fields -->
+              {% for address in AllAddress %}
+
+
+			 <input type="hidden" class="form-control" value="{{address.firstname}}" name="firstname"placeholder="First Name"required />
+       <input type="hidden" class="form-control" value="{{address.id}}" name="selected_addresses"placeholder="First Name"required />
+
+			 <input type="hidden" class="form-control" id="last"value="{{address.lastname}}" name="lastname"placeholder="Last Name" required/>
+			 <input type="hidden" class="form-control" id="phone"value="{{address.phone}}" name="phone"placeholder="Phone Number"required/>
+			 <input type="hidden" class="form-control" id="email"value="{{address.email}}" name="email"placeholder="Email" required/>
+			 <input type="hidden" class="form-control" id="add1" value="{{address.address_line_1}}" name="address_line_1" placeholder="Address 1"required/>
+       <input type="hidden" class="form-control" id="add1" value="{{address.address_line_2}}" name="address_line_2" placeholder="Address 2"required/>
+
+			 <input type="hidden" class="form-control" id="city" value="{{address.city}}" name="city"placeholder="City" required/>
+			 <input type="hidden" class="form-control" id="state" value="{{address.state}}" name="state"placeholder="State" required/>
+			 <input type="hidden" class="form-control" id="zip_code" name="pincode"value="{{address.pincode}}" placeholder="Postcode/ZIP" required/>
+			 <!-- Coupon Related Fields -->
+			 <input type="hidden" class="form-control" value="{{total}}" name="total" required/>
+			 <input type="hidden" class="form-control" value="{{grand_total}}" name="grand_total" required/>
+			 <input type="hidden" class="form-control" value="{{amountToBePaid}}" name="amountToBePaid" required/>
+			 <input type="hidden" class="form-control" id="couponCode" value="{{coupon.code}}" name="couponCode" required/>
+			 <input type="hidden" class="form-control" value="{{coupon_discount}}" name="couponDiscount" required/>
+			<!-- Cod Related Fields -->
+      {% endfor %}
+			 <input type="hidden" value="COD"name="payment_method">
+              <div class="payment_item">
+                
+              </div>
+              <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" value="submit" class="primary-btn border-0 w-25">Cash on delivery</button>&nbsp&nbsp&nbsp
+          </form>
+          <button type="button" id="payWithRazorpay"  class="primary-btn border-0 w-25">Pay with Razorpay</button>				</div>
+              </div>
+            </div>
+          </div>
+
+            
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-content">
+    
+
+    <article class="card">
+                <br/>
+    <h2 class="text-center">&nbsp;&nbsp;Add New Address</h2>
+                <div class="card-body">
+    
+                    <div class="row">
+                        <div class="col-md-12  pt-4" style="background-color: #ecfdff;">
+                            <form class="row contact_form" action=" {% url 'add_address' 1 %}" method="POST" id="a1">
+                                {%csrf_token%}
+                                <div class="col-md-6 form-group p_star">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" id="first"  name="firstname" form="a1" placeholder="First Name"required />
+                                </div>
+                                <div class="col-md-6 form-group p_star">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" id="last"  name="lastname" form="a1" placeholder="Last Name" required/>
+                                </div>
+                                <div class="col-md-6 form-group p_star">
+                                    <label>Phone Number</label>
+                                    <input type="text" class="form-control" id="phone"  name="phone" form="a1"  placeholder="Phone Number"required  pattern="[0-9]+" title="Please enter only digits" maxlength="10"/>
+                                </div>
+                                <div class="col-md-6 form-group p_star">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" id="email"  name="email" form="a1" placeholder="Email" required/>
+                                </div>
+                                <div class="col-md-6 form-group p_star">
+                                    <label>Address</label>
+                                    <input type="text" class="form-control" id="add1"  name="address_line_1" form="a1" placeholder="Address"required/>
+                                </div>
+                                <div class="col-md-6 form-group p_star">
+                                    <label>Landmark</label>
+                                    <input type="text" class="form-control" id="add1"  name="address_line_2" form="a1" placeholder="Landmark"required/>
+                                </div>
+                                
+                                <div class="col-md-3 form-group p_star">
+                                    <label>City</label><br>
+                                    <select class="form-select" id="id_city" name="city" form="a1" required><br>
+                                        <option value="">Select city</option>
+                                        {% for city in city %}
+                                            
+                                                <option value="{{ city }}">{{ city }}</option>
+                                            
+                                        {% endfor %}
+                                    </select><br>
+                                </div>
+                                <div class="col-md-3 form-group p_star">
+                                    <label>State</label><br>
+                                    <select class="form-select" id="id_state" name="state" form="a1" required><br>
+                                        <option value="">Select State</option>
+                                        {% for state in state %}
+                
+                                                <option value="{{ state }}">{{ state }}</option>
+            
+                                        {% endfor %}
+                                    </select><br>
+                                </div>
+                              
+                                <div class="col-md-6 ps-5  form-group">
+                                    <label>Pin Code</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode"  form="a1" placeholder="Pincode" required pattern="[0-9]+" title="Please enter only digits" maxlength="6"/>
+                                </div>
+                                {% comment %} <input type="hidden" class="form-control" name="form_from" value="{{form_from}}" required/> {% endcomment %}
+    
+    
+                                <br/><br/>
+                                <div class="col-sm-12 form-group p_star">
+                                    <center>
+                                        <button type="submit" name="submit" form="a1" class=" btn btn-info " style="height:40px width:20px">Save</button>
+                                    </center>
+                                </div>
+                            </form>
+                        </div>
+    
+                        </div>
+    
+                    </div>
+                </div>
+            </article>
+    
+        </main>
+        </div>
+        </div>
+    </section>
+
+
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{% static 'js/checkout.js' %}"></script>
+{% endblock %}
+

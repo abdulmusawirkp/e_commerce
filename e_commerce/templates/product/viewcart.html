@@ -1,0 +1,128 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block banner %}
+
+ 
+
+{% endblock banner %}
+
+
+{% block bodies %}
+<section class="cart_area padding_top w-100">
+  <form class="row contact_form" action="{% url 'checkout' %}" method="POST" >
+  {% csrf_token %}
+  <div class="container">
+    {% if not cart_items %}
+    <h2 class="text-center">Your cart is empty</h2>
+            <div class="text-center">
+                <a href="{%url 'userproduct' 0 %}">Continue shopping..</a>
+            </div>
+            {% else %}
+    <div class="cart_inner">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+              {% comment %} <th scope="col">Stock</th> {% endcomment %}
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for item in cart_items %}
+            <tr>
+              <td>
+                <div class="media">
+                  <div class="d-flex">
+                    <a href="{% url 'usersingleproduct' item.product.id %}"><img src="{{ item.product.productimage_set.first.images.url }}" alt="" style="height: 70px;"></a>
+                  </div>
+                  <div class="media-body">
+                    <p>{{ item.product.name }}</p>
+                    <p>{{item.varient.varientname}}</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <h5>$ {{ item.varient.varprice }}</h5>
+              </td>
+              {% if item.product.stock == 0 %}
+              <td><div class="product_count">
+                <a class="text-danger"> Currently, Out of Stock </a>
+                  </div>
+                  <td>
+                    <h5><del>{{ item.varient.varprice }}</del></h5>
+                  </td>
+              </td>
+              {% else %}
+              <td>
+                
+                
+                
+                {% comment %} cart incredecre using ajax
+                <div class="product_count">
+                  <a class="minus-cart btn" pid={{ item.product.id }}> <i class="fas fa-minus-square fa-lg"></i></a>
+                       <span id="quantity">{{ item.quantity }}</span>
+                  <a class="plus-cart btn" pid={{ item.product.id }} > <i class="fas fa-plus-square fa-lg"></i></a>
+                </div> {% endcomment %}
+
+                <div class="product_count">
+
+                  <a href="{% url 'removecartitem' item.product.id item.varient.id %}" > <i class="fas fa-minus"></i></a>
+                  <input class="input-number" name="quantity" type="text" value="{{item.quantity}}" min="0" max="100">
+                  <a href="{% url 'addcartitem' item.product.id item.varient.id %}" > <i class="fas fa-plus"></i></a>
+                </div>
+                
+              </td>
+              <td>
+                <h5>{{ item.price}}</h5>
+              </td>
+              {% endif %}
+              <td>
+                <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                  <a href="{% url 'removecartproduct' item.product.id item.varient.id %}" class="text-danger"  onclick="return confirm('Are You Sure ?')"><i class="fas fa-trash fa-lg"></i></a>
+                </div>
+              </td>
+            </tr>
+            
+            {% endfor %}
+            <tr class="bottom_button">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+              </td>
+
+              <td></td>
+              <td>
+                <h5>Subtotal</h5>
+              </td>
+              <td>
+                <h5>₹{{total}}</h5>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+ <br><br><br>
+        <div class="checkout_btn_inner float-right">
+          <a class="btn_1" href="{% url 'userproduct' 0 %}">Continue Shopping</a>
+          {% if total > 0 %}
+          <button type ="submit" class="btn_1 checkout_btn_1"> Proceed to checkout </button>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    </form>
+</section>
+<br><br><br>
+
+
+
+{% endblock bodies %}

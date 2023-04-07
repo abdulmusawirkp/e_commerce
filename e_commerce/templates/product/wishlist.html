@@ -1,0 +1,70 @@
+{% extends 'user/base.html' %}
+{% load static %}
+{% block banner %}
+
+
+
+{% endblock banner %}
+
+
+{% block bodies %}
+<section class="cart_area padding_top">
+    <center>
+        <h3>Wish List</h3>
+    </center>
+    <div class="container">
+        {%if not witems%}
+            <h2 class="text-center">Your wish list is empty</h2>
+            <div class="text-center">
+                <a href="{%url 'userproduct' 0 %}">Continue shopping..</a>
+            </div>
+        {%else%}
+
+        <div class="cart_inner">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr style="height:2px;">
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for item in witems%}
+                    <tr>
+                    <td>
+                    <div class="media">
+                        <div class="d-flex">
+                          <a href="{% url 'usersingleproduct' item.product.id %}"><img style="height:71px"  src="{{item.product.productimage_set.first.images.url}}" alt=""/></a>
+                        </div>
+                        <div class="media-body">
+                            <p>{{item.product.name}},{{item.provar.varientname}}</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <h5>$ {{item.provar.varprice}}</h5>
+                </td>
+                <td class="text-right">
+                        <a href="{% url 'addtocart' item.provar.id %}"><i class="fas fa-cart-plus"></i></a>
+
+
+                </td>
+                <td class="text-right">
+                    <a href="{% url 'remove_from_wishlist' item.product.id item.provar.id %}"  class="text-danger" onclick="return confirm('Are You Sure ?')"><i class="fas fa-trash"></i></a>
+
+                </td>
+            </div>
+
+            </tr>
+                {% endfor %}
+                
+                </tbody>
+                </table>
+        </div>
+        {%endif%}
+    </div>
+</section>
+{% endblock bodies %}

@@ -1,0 +1,61 @@
+{% extends 'admin/bases.html' %}
+{% block main %}
+ <div class="row">
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Users</h4>
+                <h5 style="color : #F1948A">{{user}}</h5>
+            </div>
+            <div class="card-footer">
+                <a href=" {% url 'manageuser'%}" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Products</h4>
+                <h5 style="color : #F1948A">{{product}}</h5>
+            </div>
+            <div class="card-footer">
+                <a href=" {% url 'viewproduct'%}" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Category</h4>
+                <h5 style="color : #F1948A">{{category}}</h5>
+            </div>
+            <div class="card-footer">
+                <a href=" {% url 'viewcategory'%}" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Order</h4>
+                <h5 style="color : #F1948A">{{order}} </h5>
+            </div>
+            <div class="card-footer">
+                <a href=" {% url 'manage_order'%}" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 p-2">
+        <div class="card shadow bg-dark">
+            <div class="card-body">
+                <h4 class="text-light">Total Coupons</h4>
+                <h5 style="color : #F1948A">{{coupons}} </h5>
+            </div>
+            <div class="card-footer">
+                <a href=" {% url 'view_coupons'%}" class="text-warning">View Details >></a>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+ {% endblock %}

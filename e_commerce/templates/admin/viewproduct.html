@@ -1,0 +1,80 @@
+{% extends 'admin/bases.html' %}
+{% load static %}
+{% block main %} 
+
+<div class="card shadow w-100">
+    <div class="card-body">
+
+        <h5 class="p-2" style="border-bottom: 2px solid orange;">All Product</h5>
+        <div class="container-fluid">
+
+            <table class="table table-bordered table-sm " style="text-align:center;">
+                <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    {% comment %} <th>Price</th> {% endcomment %}
+                    <th>Stock</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in page_obj %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td><img src="{{ i.productimage_set.first.images.url }}" style="width: 50px; height: 50px; border-radius: 10%;"/><br>
+                    <td>{{i.name}}</td>
+                    <td>{{i.category.name}}</td>
+                    {% comment %} <td>{{i.price}}</td> {% endcomment %}
+                    
+                    <td>{% for v  in varient %}
+                        {% if i.name == v.proname.name %}
+                        <p>{{v.varientname}} : {{v.varstock}}</p>
+                        {% endif %}
+                        {% endfor %}</td>
+                    <td>
+                        <a  href="{% url 'editproduct' i.id %}" class="text-success">Edit</a>
+                        <a href="{% url 'deleteproduct' i.id %}" class="text-danger"
+                           onclick="return confirm('Are You Sure ?')">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="col-lg-12 ">
+                <div class="pagination justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                        <i class="ti-angle-left">PREVIOUS</i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% for page in page_obj.paginator.page_range %}
+                                {% if page_obj.number == page %}
+                                    <li class="page-item active"><a class="page-link" href="#">{{ page }}</a></li>
+                                {% elif page > page_obj.number|add:'-3' and page < page_obj.number|add:'3' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                        <i class="ti-angle-right">NEXT</i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
