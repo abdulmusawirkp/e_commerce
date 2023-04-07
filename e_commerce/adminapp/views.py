@@ -76,7 +76,6 @@ def addproduct(request):
     category = Category.objects.all()
     if request.method == 'POST':
         name = request.POST['name']
-
         categ = request.POST['categories']
         desc = request.POST['desc']
         images = request.FILES.getlist('image')
