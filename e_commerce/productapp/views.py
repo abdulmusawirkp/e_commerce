@@ -24,22 +24,6 @@ def userwishlist(request):
 
     return render(request,'product/wishlist.html',{'witems':witems})
 
-# def add_to_wishlist(request,product_id):
-#     if request.user.is_authenticated:
-#         product = Product.objects.get(id=product_id)
-#         user = request.user
-#         if wishlist.objects.filter(product=product,user_id=user.id).exists():
-#             messages.info(request, "Product already exist in wishlist")
-#             return redirect(userwishlist)
-            
-#         else:
-#             wishlist.objects.create(product=product,user_id=user.id)
-#             messages.success(request,"Product added to wishlist")
-#             return redirect(userwishlist)
-            
-#     else:
-#         messages.warning(request, "Please log in to add items to wishlist.")
-#         return redirect(loginpage)
 
 
 @login_required(login_url='loginpage')
@@ -146,52 +130,6 @@ def addtocart(request, product_id):
 
     return redirect(viewcart)
     
-
-# def addtocart(request, product_id):
-#     if request.user.is_authenticated:
-#         current_user = request.user
-#         quantity = request.POST.get('quantity')
-#         if quantity is None:
-#             product_quantity = 1
-#         else:
-#             product_quantity = int(quantity)
-
-#         try:
-#             product = Product.objects.get(id=product_id)
-#         except ObjectDoesNotExist:
-#             messages.error(request, "Product not found.")
-#             return redirect('userproduct')
-
-#         varient_id = request.POST.get('varient_id')
-#         try:
-#             varient = ProductVarient.objects.get(varientname=varient_id)
-#         except ProductVarient.DoesNotExist:
-#             messages.error(request, "Variant not found.")
-#             return redirect('userproduct')
-
-#         if varient.varstock < product_quantity:
-#             product_quantity = varient.varstock
-
-#         item_exists = CartItem.objects.filter(user_id=current_user.id, product_id=product.id, provar_id=varient.id).exists()
-#         if item_exists:
-#             item = CartItem.objects.get(product_id=product.id, user_id=current_user.id, provar_id=varient.id)
-#             quantity_expected = item.quantity + product_quantity
-#             if varient.varstock > quantity_expected:
-#                 item.quantity = item.quantity + product_quantity
-#                 item.save()
-#                 messages.success(request, f"{product.name} are added to Cart.")
-#             else:
-#                 item.quantity = varient.varstock
-#                 item.save()
-#                 messages.info(request, f"{varient.varstock} items left. All of them are added to Cart.")
-#         else:
-#             item = CartItem.objects.create(user_id=current_user.id, product_id=product.id, quantity=product_quantity, provar_id=varient.id)
-#             messages.success(request, f"{product.name} added to cart!")
-
-#         return redirect(viewcart)
-#     else:
-#         messages.warning(request, "Please log in to add items to cart.")
-#         return redirect(loginpage)
 
 
 
