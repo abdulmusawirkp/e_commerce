@@ -42,7 +42,7 @@ def userwishlist(request):
 #         return redirect(loginpage)
 
 
-@login_required
+@login_required(login_url='loginpage')
 def add_to_wishlist(request, product_id):
     # product = Product.objects.get(id=product_id)
     varient = ProductVarient.objects.get(id=product_id)
@@ -62,7 +62,7 @@ def remove_from_wishlist(request,product_id,varient_id):
     wishItem.delete()
     return redirect(userwishlist)
 
-@login_required
+
 def viewcart(request):
     current_user = request.user
     items = CartItem.objects.filter(user_id=current_user.id).order_by('id')
@@ -91,7 +91,7 @@ def viewcart(request):
     return render(request, 'product/viewcart.html',context)
 
 
-@login_required
+@login_required(login_url='loginpage')
 def addtocart(request, product_id):
     current_user=request.user
     quantity = request.POST.get('quantity')
