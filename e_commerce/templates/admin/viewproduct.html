@@ -29,7 +29,7 @@
                             <td>{{i.category.name}}</td>
                             <td>{% for v  in varient %}
                                 {% if i.name == v.proname.name %}
-                                <p>{{v.varientname}} : {{v.varstock}}</p>
+                                {{v.varientname}} : {{v.varstock}}
                                 {% endif %}
                                 {% endfor %}</td>
                             <td>
