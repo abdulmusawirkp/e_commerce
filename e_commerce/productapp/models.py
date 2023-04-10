@@ -42,7 +42,7 @@ class Payment(models.Model):
     paid = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True)
 
-    def str(self):
+    def __str__(self):
         return self.payment_id    
         
     
@@ -80,7 +80,7 @@ class Order(models.Model):
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     refund_completed = models.BooleanField(default=False)
-    def str(self):
+    def __str__(self):
         return self.order_number
 
 
@@ -97,7 +97,7 @@ class OrderProduct(models.Model):
     updated_at = models.DateField(auto_now=True)
 
 
-    def _str_(self):
+    def __str__(self):
         return self.product.name
     def sub_total(self):
         return self.productvarient.varprice * self.quantity
@@ -108,5 +108,5 @@ class UserCoupon(models.Model):
     coupon = models.ForeignKey(Coupon,on_delete = models.CASCADE, null = True)
     order  = models.ForeignKey(Order,on_delete=models.SET_NULL,null = True,related_name='order_coupon')
     used = models.BooleanField(default = False)
-    def str(self):
+    def __str__(self):
         return str(self.id)
