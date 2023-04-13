@@ -13,6 +13,7 @@ import random
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
+import e_commerce.settings
 # import razorpay
 
 # Create your views here.
@@ -251,7 +252,7 @@ def checkout(request):
             instance.delete()
         except ObjectDoesNotExist:
             instance = None
-
+    rkey=e_commerce.settings.API_KEY
     context={
         'subtotal':subtotal,
         'quantity':quantity,
@@ -266,7 +267,8 @@ def checkout(request):
         'AllAddress':addresses,
         'state':state,
         'city':city,
-        'couponcodes':couponcodes
+        'couponcodes':couponcodes,
+        'rkey':rkey
         #'selected_address':selected_address
     }
 

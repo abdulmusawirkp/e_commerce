@@ -35,8 +35,7 @@ $(document).ready(function () {
         console.log(couponDiscount);
         var amountToBePaid = $("[name='amountToBePaid']").val();
         console.log(amountToBePaid);
-      
-        console.log(first_name,last_name,email,phone,address_line_1,address_line_2,city,state,zip_code);
+        console.log(first_name,last_name,email,phone,address_line_1,address_line_2,city,state,zip_code,rkey);
 
 
         if (
@@ -50,7 +49,7 @@ $(document).ready(function () {
 
             city == "" ||
             state == "" ||
-            zip_code == "" 
+            zip_code == ""
 
         ) {
             swal("alert", "All fields are mandatory", "error");
@@ -73,7 +72,7 @@ $(document).ready(function () {
                     console.log(response, amountToBePaid);
                     var options = {
                        
-                           key: e_commerce.settings.API_KEY,
+                           key: rkey,
                         
                         // Enter the Key ID generated from the Dashboard
 
