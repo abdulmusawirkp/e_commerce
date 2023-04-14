@@ -187,93 +187,186 @@ def removecartitem(request,product_id,varient_id):
     return redirect(viewcart)    
 
 
+
+# def checkout(request):
+#     state = ['Kerala', 'AndraPradesh', 'Karnataka', 'Tamilnadu']
+#     city = ['Kannur','Kozhikkode','Ernakulam','Thiruvananthapuram','Banglore','Hubli','Hydrabad','Coimbator','Madurai']
+#     couponcodes=Coupon.objects.all()
+#     subtotal=0
+#     quantity=0
+#     amountToBePaid =0
+#     msg=''
+#     cart_items=None
+#     coupon_discount = 0
+#     coupon_code = ''
+#     discount = False
+#     coupon = ''
+    
+#     addresses = Address.objects.filter(user_id=request.user)
+#     # selected_address = addresses.first() if selected_address else None
+#     user=User.objects.get(id=request.user.id)
+#     cart_items=CartItem.objects.filter(user=user, provar__varstock__gt=0)
+#     for cart_item in cart_items:
+#         subtotal+=(cart_item.provar.varprice*cart_item.quantity)
+#         quantity+=cart_item.quantity
+#     grand_total = subtotal+70
+#     amountToBePaid = grand_total
+#     if ('couponCode' in request.POST):
+#         coupon_code = request.POST.get('couponCode')
+#         print('checkout il cuopon')
+#         print(coupon_code)
+#         try:
+#             coupon = Coupon.objects.get(code = coupon_code)
+#             couponcodes=Coupon.objects.all()
+#             grand_total = request.POST['grand_total']
+#             coupon_discount = 0
+#             if (coupon.active):
+#                 try:
+#                     instance = UserCoupon.objects.get(user=request.user, coupon=coupon)
+#                 except ObjectDoesNotExist:
+#                     instance = None
+#                 # instance = UserCoupon.objects.get(user = request.user ,coupon = coupon)
+#                 if(instance):
+#                     pass
+#                 else:
+#                     instance = UserCoupon.objects.create(user = request.user ,coupon = coupon)
+#                 if(not instance.used):
+#                     if float(grand_total) >= float(instance.coupon.min_value):
+#                         coupon_discount = ((float(grand_total) * float(instance.coupon.discount))/100)
+#                         amountToBePaid = float(grand_total) - coupon_discount
+#                         amountToBePaid = format(amountToBePaid, '.2f')
+#                         coupon_discount = format(coupon_discount, '.2f')
+#                         msg = 'Coupon Applied successfully'
+#                         discount=True
+#                     else:
+#                         msg='This coupon is only applicable for orders more than ₹'+ str(instance.coupon.min_value)+ '\- only!'
+#                 else:
+#                     msg = 'Coupon is already used'
+#             else:
+#                 msg="Coupon is not Active!"
+#         except:
+#             msg="Invalid Coupon Code!"
+#     else:
+#         try:
+#             instance = UserCoupon.objects.get(user=request.user, used= False)
+#             instance.delete()
+#         except ObjectDoesNotExist:
+#             instance = None
+#     rkey=e_commerce.settings.API_KEY
+#     context={
+#         'subtotal':subtotal,
+#         'quantity':quantity,
+#         'cart_items':cart_items,
+#         'grand_total':grand_total,
+#         'user':user,
+#         'amountToBePaid':amountToBePaid,
+#         'msg':msg,
+#         'coupon':coupon,
+#         'coupon_discount':coupon_discount,
+#         'discount':discount,
+#         'AllAddress':addresses,
+#         'state':state,
+#         'city':city,
+#         'couponcodes':couponcodes,
+#         'rkey':rkey
+#         #'selected_address':selected_address
+#     }
+#     return render(request,'product/checkout.html',context)
+
 @login_required
 def checkout(request):
     state = ['Kerala', 'AndraPradesh', 'Karnataka', 'Tamilnadu']
-    city = ['Kannur','Kozhikkode','Ernakulam','Thiruvananthapuram','Banglore','Hubli','Hydrabad','Coimbator','Madurai']
-    couponcodes=Coupon.objects.all()
-    subtotal=0
-    quantity=0
-    amountToBePaid =0
-    msg=''
-    cart_items=None
+    city = ['Kannur', 'Kozhikkode', 'Ernakulam', 'Thiruvananthapuram', 'Banglore', 'Hubli', 'Hydrabad', 'Coimbator', 'Madurai']
+    couponcodes = Coupon.objects.all()
+    subtotal = 0
+    quantity = 0
+    amountToBePaid = 0
+    msg = ''
+    cart_items = None
     coupon_discount = 0
     coupon_code = ''
     discount = False
     coupon = ''
     
     addresses = Address.objects.filter(user_id=request.user)
-    # selected_address = addresses.first() if selected_address else None
-    user=User.objects.get(id=request.user.id)
-    cart_items=CartItem.objects.filter(user=user, provar__varstock__gt=0)
-    for cart_item in cart_items:
-        subtotal+=(cart_item.provar.varprice*cart_item.quantity)
-        quantity+=cart_item.quantity
-    grand_total = subtotal+70
-    amountToBePaid = grand_total
-    if ('couponCode' in request.POST):
-        coupon_code = request.POST.get('couponCode')
-        print('checkout il cuopon')
-        print(coupon_code)
-        try:
-            coupon = Coupon.objects.get(code = coupon_code)
-            couponcodes=Coupon.objects.all()
-            grand_total = request.POST['grand_total']
-            coupon_discount = 0
-            if (coupon.active):
-                try:
-                    instance = UserCoupon.objects.get(user=request.user, coupon=coupon)
-                except ObjectDoesNotExist:
-                    instance = None
-                # instance = UserCoupon.objects.get(user = request.user ,coupon = coupon)
-                if(instance):
-                    pass
-                else:
-                    instance = UserCoupon.objects.create(user = request.user ,coupon = coupon)
-                if(not instance.used):
-                    if float(grand_total) >= float(instance.coupon.min_value):
-                        coupon_discount = ((float(grand_total) * float(instance.coupon.discount))/100)
-                        amountToBePaid = float(grand_total) - coupon_discount
-                        amountToBePaid = format(amountToBePaid, '.2f')
-                        coupon_discount = format(coupon_discount, '.2f')
-                        msg = 'Coupon Applied successfully'
-                        discount=True
-                    else:
-                        msg='This coupon is only applicable for orders more than ₹'+ str(instance.coupon.min_value)+ '\- only!'
-                else:
-                    msg = 'Coupon is already used'
-            else:
-                msg="Coupon is not Active!"
-        except:
-            msg="Invalid Coupon Code!"
+    if not addresses: 
+        messages.error(request,'You have not added any addresses. Please add an address to continue.')
+        return redirect('useraddress')
     else:
-        try:
-            instance = UserCoupon.objects.get(user=request.user, used= False)
-            instance.delete()
-        except ObjectDoesNotExist:
-            instance = None
-    rkey=e_commerce.settings.API_KEY
-    context={
-        'subtotal':subtotal,
-        'quantity':quantity,
-        'cart_items':cart_items,
-        'grand_total':grand_total,
-        'user':user,
-        'amountToBePaid':amountToBePaid,
-        'msg':msg,
-        'coupon':coupon,
-        'coupon_discount':coupon_discount,
-        'discount':discount,
-        'AllAddress':addresses,
-        'state':state,
-        'city':city,
-        'couponcodes':couponcodes,
-        'rkey':rkey
-        #'selected_address':selected_address
-    }
 
+        user = User.objects.get(id=request.user.id)
+        cart_items = CartItem.objects.filter(user=user, provar__varstock__gt=0)
 
-    return render(request,'product/checkout.html',context)
+        for cart_item in cart_items:
+            subtotal += (cart_item.provar.varprice*cart_item.quantity)
+            quantity += cart_item.quantity
+
+        grand_total = subtotal+70
+        amountToBePaid = grand_total
+
+        if ('couponCode' in request.POST):
+            coupon_code = request.POST.get('couponCode')
+            print('checkout il cuopon')
+            print(coupon_code)
+            try:
+                coupon = Coupon.objects.get(code=coupon_code)
+                couponcodes = Coupon.objects.all()
+                grand_total = request.POST['grand_total']
+                coupon_discount = 0
+
+                if (coupon.active):
+                    try:
+                        instance = UserCoupon.objects.get(user=request.user, coupon=coupon)
+                    except ObjectDoesNotExist:
+                        instance = None
+
+                    if(instance):
+                        pass
+                    else:
+                        instance = UserCoupon.objects.create(user=request.user, coupon=coupon)
+
+                    if(not instance.used):
+                        if float(grand_total) >= float(instance.coupon.min_value):
+                            coupon_discount = ((float(grand_total) * float(instance.coupon.discount))/100)
+                            amountToBePaid = float(grand_total) - coupon_discount
+                            amountToBePaid = format(amountToBePaid, '.2f')
+                            coupon_discount = format(coupon_discount, '.2f')
+                            msg = 'Coupon Applied successfully'
+                            discount = True
+                        else:
+                            messages.info(request,'This coupon is only applicable for orders more than ₹'+ str(instance.coupon.min_value)+ '\- only!')
+                    else:
+                        messages.info(request,'Coupon is already used')
+                else:
+                    messages.info(request,"Coupon is not Active!")
+            except:
+                messages.error(request,"Invalid Coupon Code!")
+        else:
+            try:
+                instance = UserCoupon.objects.get(user=request.user, used=False)
+                instance.delete()
+            except ObjectDoesNotExist:
+                instance = None
+
+        context = {
+            'subtotal': subtotal,
+            'quantity': quantity,
+            'cart_items': cart_items,
+            'grand_total': grand_total,
+            'user': user,
+            'amountToBePaid': amountToBePaid,
+            'msg': msg,
+            'coupon': coupon,
+            'coupon_discount': coupon_discount,
+            'discount': discount,
+            'AllAddress': addresses,
+            'state': state,
+            'city': city,
+            'couponcodes': couponcodes,
+            'rkey': e_commerce.settings.API_KEY
+        }
+        return render(request,'product/checkout.html',context)
+
 
 def calculateCartTotal(request):
    cart_items   = CartItem.objects.filter(user=request.user,provar__varstock__gt=0)

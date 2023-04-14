@@ -29,7 +29,7 @@ $(document).ready(function () {
 
         var grand_total = $("[name='grand_total']").val();
         console.log(grand_total);
-        var couponCode = $("[name='couponCode']").val();
+        var couponCode = $("[name='coupon_Code']").val();
         console.log(couponCode);
         var couponDiscount = $("[name='couponDiscount']").val();
         console.log(couponDiscount);
