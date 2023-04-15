@@ -18,9 +18,11 @@ import razorpay
 import e_commerce.settings
 
 
+
 # Create your views here.
 def base (request):
     banner=Banner.objects.all()
+    product=Product.objects.all()
     return render(request,'user/base.html',locals())
 
 
